@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_clean_solid/core/theme/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        fontFamily: 'Quicksand',
+        primaryColor: CustomColors.blue,
+        backgroundColor: CustomColors.black,
+        errorColor: CustomColors.red,
+        scaffoldBackgroundColor: CustomColors.black,
       ),
       home: Container(),
     );
