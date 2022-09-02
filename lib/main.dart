@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_clean_solid/core/theme/colors.dart';
 import 'package:todo_clean_solid/core/theme/text_styles.dart';
-import 'package:todo_clean_solid/features/auth/presenter/pages/signin_page.dart';
+import 'package:todo_clean_solid/features/auth/presenter/pages/signup_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
                   borderSide: BorderSide.none)),
           textSelectionTheme:
               const TextSelectionThemeData(cursorColor: CustomColors.blue)),
-      home: const SignInPage(),
+      home: const SignUpPage(),
     );
   }
 }
