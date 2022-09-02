@@ -75,11 +75,11 @@ flutter:
   fonts:
     - family: Quicksand
       fonts:
-        - asset: Quicksand-Bold.ttf
-        - asset: Quicksand-Light.ttf
-        - asset: Quicksand-Medium.ttf
-        - asset: Quicksand-Regular.ttf
-        - asset: Quicksand-SemiBold.ttf
+        - asset: assets/fonts/quicksand/Quicksand-Bold.ttf
+        - asset: assets/fonts/quicksand/Quicksand-Light.ttf
+        - asset: assets/fonts/quicksand/Quicksand-Medium.ttf
+        - asset: assets/fonts/quicksand/Quicksand-Regular.ttf
+        - asset: assets/fonts/quicksand/Quicksand-SemiBold.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

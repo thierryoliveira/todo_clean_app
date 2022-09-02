@@ -1,0 +1,1 @@
+enum SizedBoxSpacerType { horizontal, vertical }
