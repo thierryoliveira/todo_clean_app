@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:todo_clean_solid/core/enums/custom_button_type.dart';
-import 'package:todo_clean_solid/core/extensions/build_context.dart';
-import 'package:todo_clean_solid/core/theme/colors.dart';
-import 'package:todo_clean_solid/core/widgets/custom_button.dart';
-import 'package:todo_clean_solid/core/widgets/custom_textfield.dart';
-import 'package:todo_clean_solid/core/widgets/sized_box_spacer.dart';
-import 'package:todo_clean_solid/features/auth/presenter/widgets/auth_header_widget.dart';
 
-import '../../../../core/theme/text_styles.dart';
+import '../../../../extensions/build_context.dart';
+import '../../../../theme/colors.dart';
+import '../../../../theme/text_styles.dart';
+import '../../../../widgets/custom_button.dart';
+import '../../../../widgets/custom_textfield.dart';
+import '../../../../widgets/sized_box_spacer.dart';
+import '../widgets/auth_header_widget.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({Key? key}) : super(key: key);
+class SignUpPage extends StatelessWidget {
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -22,9 +21,16 @@ class SignInPage extends StatelessWidget {
                 percentage: 5,
               ),
               const AuthHeaderWidget(
-                  title: 'Bem vindo!', subtitle: 'Entre para continuar'),
+                  title: 'Criar uma conta',
+                  subtitle: 'Por favor, preencha os campos abaixo'),
               const SizedBoxSpacer(
                 percentage: 8,
+              ),
+              const CustomTextfield(
+                labelText: 'Nome',
+              ),
+              const SizedBoxSpacer(
+                percentage: 2,
               ),
               const CustomTextfield(
                 labelText: 'Email',
@@ -40,27 +46,21 @@ class SignInPage extends StatelessWidget {
                   size: 20,
                 ),
               ),
-              Align(
-                alignment: Alignment.topRight,
-                child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Esqueceu a senha?',
-                      style: TextStyles.small
-                          .copyWith(fontWeight: FontWeight.bold),
-                    )),
+              const SizedBoxSpacer(
+                percentage: 2,
+              ),
+              const CustomTextfield(
+                labelText: 'Confirmação de senha',
+                suffixIcon: Icon(
+                  Icons.visibility,
+                  color: CustomColors.white,
+                  size: 20,
+                ),
               ),
               const SizedBoxSpacer(
                 percentage: 8,
               ),
-              const CustomButton(text: 'Entrar'),
-              const SizedBoxSpacer(
-                percentage: 2,
-              ),
-              const CustomButton(
-                text: 'Entrar com Google',
-                buttonType: CustomButtonType.secondary,
-              ),
+              const CustomButton(text: 'Criar conta'),
               const SizedBoxSpacer(
                 percentage: 2,
               ),
@@ -68,13 +68,13 @@ class SignInPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Ainda não tem conta?',
+                    'Já tem uma conta?',
                     style: TextStyles.small,
                   ),
                   TextButton(
                     onPressed: () {},
                     child: Text(
-                      'Crie aqui',
+                      'Entrar',
                       style: TextStyles.small.copyWith(
                           fontWeight: FontWeight.bold,
                           color: CustomColors.blue),

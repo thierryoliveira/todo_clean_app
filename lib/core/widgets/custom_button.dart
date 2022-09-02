@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_clean_solid/core/enums/custom_button_type.dart';
-import 'package:todo_clean_solid/core/extensions/build_context.dart';
-import 'package:todo_clean_solid/core/theme/text_styles.dart';
+import '../enums/custom_button_type.dart';
+import '../extensions/build_context.dart';
+import '../theme/text_styles.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;

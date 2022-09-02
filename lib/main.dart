@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_clean_solid/core/injections/firebase_initialize.dart';
-import 'package:todo_clean_solid/core/theme/colors.dart';
-import 'package:todo_clean_solid/core/theme/text_styles.dart';
-import 'package:todo_clean_solid/features/auth/presenter/pages/signup_page.dart';
+import 'core/features/auth/presenter/pages/signup_page.dart';
+import 'core/injections/firebase_initialize.dart';
+import 'core/theme/colors.dart';
+import 'core/theme/text_styles.dart';
 
 void main() async {
   await FirebaseInitalize.init();

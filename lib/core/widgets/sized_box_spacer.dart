@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_clean_solid/core/enums/sized_box_spacer_type.dart';
-import 'package:todo_clean_solid/core/extensions/build_context.dart';
+
+import '../enums/sized_box_spacer_type.dart';
+import '../extensions/build_context.dart';
 
 class SizedBoxSpacer extends StatelessWidget {
   final int percentage;

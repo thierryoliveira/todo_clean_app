@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/text_styles.dart';
-import '../../../../core/widgets/sized_box_spacer.dart';
+import '../../../../theme/text_styles.dart';
+import '../../../../widgets/sized_box_spacer.dart';
 
 class AuthHeaderWidget extends StatelessWidget {
   final String title;
