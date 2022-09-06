@@ -1,0 +1,3 @@
+class TestUtils {
+  TestUtils._();
+}

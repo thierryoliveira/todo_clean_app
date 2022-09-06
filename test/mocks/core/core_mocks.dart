@@ -1,0 +1,3 @@
+class CoreMocks {
+  CoreMocks._();
+}
