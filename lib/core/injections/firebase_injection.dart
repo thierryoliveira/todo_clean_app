@@ -1,5 +1,10 @@
-class FirebaseInjection {
-  FirebaseInjection._();
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 
-  static void inject() {}
+class FirebaseInjection {
+  // FirebaseInjection._();
+
+  void inject(GetIt getIt) {
+    getIt.registerFactory<FirebaseAuth>(() => FirebaseAuth.instance);
+  }
 }

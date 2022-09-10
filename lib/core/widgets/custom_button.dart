@@ -6,17 +6,19 @@ import '../theme/text_styles.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final CustomButtonType buttonType;
+  final VoidCallback onPressed;
   const CustomButton(
       {Key? key,
       required this.text,
-      this.buttonType = CustomButtonType.primary})
+      this.buttonType = CustomButtonType.primary,
+      required this.onPressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) => SizedBox(
         height: context.height * .08,
         child: ElevatedButton(
-            onPressed: () {},
+            onPressed: onPressed,
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (states) => buttonType.backgrounColor),
