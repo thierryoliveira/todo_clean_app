@@ -20,6 +20,7 @@ class AuthCubit extends Cubit<AuthState> {
         super(AuthInitial());
 
   Future<void> signIn({required String email, required String password}) async {
+    emit(SignInLoading());
     final either = await _signInUsecase(
         signInEntity: SignInEntity(email: email, password: password));
 
@@ -31,6 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
       {required String name,
       required String email,
       required String password}) async {
+    emit(SignUpLoading());
     final either = await _signUpUsecase(
         signUpEntity:
             SignUpEntity(email: email, password: password, name: name));

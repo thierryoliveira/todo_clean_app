@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/cubit/auth_cubit.dart';
+import 'package:todo_clean_solid/core/routes/auth_named_routes.dart';
 
 import '../../../../extensions/build_context.dart';
 import '../../../../theme/colors.dart';
@@ -137,7 +138,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         style: TextStyles.small,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, AuthNamedRoutes.authSignIn);
+                        },
                         child: Text(
                           'Entrar',
                           style: TextStyles.small.copyWith(
