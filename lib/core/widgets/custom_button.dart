@@ -7,11 +7,13 @@ class CustomButton extends StatelessWidget {
   final String text;
   final CustomButtonType buttonType;
   final VoidCallback onPressed;
+  final bool isLoading;
   const CustomButton(
       {Key? key,
       required this.text,
       this.buttonType = CustomButtonType.primary,
-      required this.onPressed})
+      required this.onPressed,
+      this.isLoading = false})
       : super(key: key);
 
   @override
@@ -26,9 +28,15 @@ class CustomButton extends StatelessWidget {
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                         side: BorderSide.none))),
-            child: Text(
-              text,
-              style: TextStyles.common.copyWith(color: buttonType.textColor),
-            )),
+            child: isLoading
+                ? CircularProgressIndicator.adaptive(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(buttonType.textColor),
+                  )
+                : Text(
+                    text,
+                    style:
+                        TextStyles.common.copyWith(color: buttonType.textColor),
+                  )),
       );
 }

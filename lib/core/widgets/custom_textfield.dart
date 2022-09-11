@@ -18,6 +18,7 @@ class CustomTextfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TextFormField(
+        style: const TextStyle(color: CustomColors.white),
         controller: controller,
         decoration: InputDecoration(
             contentPadding:
