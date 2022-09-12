@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/cubit/auth_cubit.dart';
 import 'package:todo_clean_solid/core/routes/auth_named_routes.dart';
+import 'package:todo_clean_solid/core/validators/validators.dart';
 import 'package:todo_clean_solid/features/tasks/core/routes/tasks_named_routes.dart';
-import '../../../../enums/custom_button_type.dart';
 import '../../../../extensions/build_context.dart';
 import '../../../../theme/colors.dart';
 import '../../../../widgets/custom_button.dart';
@@ -70,6 +70,10 @@ class _SignInPageState extends State<SignInPage> {
                     percentage: 8,
                   ),
                   CustomTextfield(
+                    validator: CustomValidators.multiple([
+                      CustomValidators.isRequired(),
+                      CustomValidators.isValidEmail()
+                    ]),
                     controller: _emailController,
                     labelText: 'Email',
                   ),
@@ -77,6 +81,7 @@ class _SignInPageState extends State<SignInPage> {
                     percentage: 2,
                   ),
                   CustomTextfield(
+                    validator: CustomValidators.isRequired(),
                     controller: _passwordController,
                     labelText: 'Senha',
                     suffixIcon: const Icon(
@@ -112,14 +117,6 @@ class _SignInPageState extends State<SignInPage> {
                                   password: _passwordController.text);
                             },
                           )),
-                  const SizedBoxSpacer(
-                    percentage: 2,
-                  ),
-                  CustomButton(
-                    text: 'Entrar com Google',
-                    buttonType: CustomButtonType.secondary,
-                    onPressed: () {},
-                  ),
                   const SizedBoxSpacer(
                     percentage: 2,
                   ),

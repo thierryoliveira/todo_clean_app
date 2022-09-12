@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/cubit/auth_cubit.dart';
+import 'package:todo_clean_solid/core/features/auth/presenter/widgets/auth_appbar.dart';
 import 'package:todo_clean_solid/core/routes/auth_named_routes.dart';
+import 'package:todo_clean_solid/core/validators/validators.dart';
 
 import '../../../../extensions/build_context.dart';
 import '../../../../theme/colors.dart';
@@ -47,6 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: const AuthAppbar(),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: context.width * .05),
           child: Form(
@@ -79,6 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   CustomTextfield(
                     controller: _nameController,
                     labelText: 'Nome',
+                    validator: CustomValidators.isRequired(),
                   ),
                   const SizedBoxSpacer(
                     percentage: 2,
@@ -86,6 +90,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   CustomTextfield(
                     controller: _emailController,
                     labelText: 'Email',
+                    validator: CustomValidators.multiple([
+                      CustomValidators.isRequired(),
+                      CustomValidators.isValidEmail()
+                    ]),
                   ),
                   const SizedBoxSpacer(
                     percentage: 2,
@@ -98,6 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       color: CustomColors.white,
                       size: 20,
                     ),
+                    validator: CustomValidators.isRequired(),
                   ),
                   const SizedBoxSpacer(
                     percentage: 2,
@@ -110,6 +119,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       color: CustomColors.white,
                       size: 20,
                     ),
+                    validator: CustomValidators.multiple([
+                      CustomValidators.isRequired(),
+                      CustomValidators.compare(
+                          controller: _passwordController,
+                          errorMessage: 'Senhas não coincidem')
+                    ]),
                   ),
                   const SizedBoxSpacer(
                     percentage: 8,
