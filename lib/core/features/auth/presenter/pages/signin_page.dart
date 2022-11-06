@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/cubit/auth_cubit.dart';
 import 'package:todo_clean_solid/core/validators/validators.dart';
+import 'package:todo_clean_solid/core/widgets/custom_password_textfield.dart';
 import 'package:todo_clean_solid/features/tasks/core/routes/tasks_named_routes.dart';
 import '../../../../extensions/build_context.dart';
 import '../../../../routes/auth_named_routes.dart';
@@ -82,15 +83,10 @@ class _SignInPageState extends State<SignInPage> {
                     const SizedBoxSpacer(
                       percentage: 2,
                     ),
-                    CustomTextfield(
+                    CustomPasswordTextfield(
                       validator: CustomValidators.isRequired(),
                       controller: _passwordController,
                       labelText: 'Senha',
-                      suffixIcon: const Icon(
-                        Icons.visibility,
-                        color: CustomColors.white,
-                        size: 20,
-                      ),
                     ),
                     Align(
                       alignment: Alignment.topRight,

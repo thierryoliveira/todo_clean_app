@@ -37,6 +37,6 @@ class AuthCubit extends Cubit<AuthState> {
         signUpEntity:
             SignUpEntity(email: email, password: password, name: name));
     either.fold((failure) => emit(AuthError(messsage: failure.message)),
-        (userEntity) => SignUpSuccess(userEntity: userEntity));
+        (userEntity) => emit(SignUpSuccess(userEntity: userEntity)));
   }
 }

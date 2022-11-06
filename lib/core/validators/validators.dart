@@ -72,4 +72,40 @@ class CustomValidators {
       return null;
     };
   }
+
+  static FormFieldValidator<String> containsNumbers({
+    required TextEditingController controller,
+    required String errorMessage,
+  }) {
+    return (value) {
+      if (!(controller.text.contains(RegExp(r'[0-9]')))) {
+        return errorMessage;
+      }
+      return null;
+    };
+  }
+
+  static FormFieldValidator<String> containsLetters({
+    required TextEditingController controller,
+    required String errorMessage,
+  }) {
+    return (value) {
+      if (!(controller.text.contains(RegExp(r'[a-zA-Z]')))) {
+        return errorMessage;
+      }
+      return null;
+    };
+  }
+
+  static FormFieldValidator<String> containsSpecialCharacters({
+    required TextEditingController controller,
+    required String errorMessage,
+  }) {
+    return (value) {
+      if (!(controller.text.contains(RegExp('[!@#%^&*(),.?":{}|<>]')))) {
+        return errorMessage;
+      }
+      return null;
+    };
+  }
 }

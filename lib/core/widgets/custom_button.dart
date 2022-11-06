@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) => SizedBox(
         height: context.height * .06,
         child: ElevatedButton(
-            onPressed: onPressed,
+            onPressed: isLoading ? null : onPressed,
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (states) => buttonType.backgrounColor),

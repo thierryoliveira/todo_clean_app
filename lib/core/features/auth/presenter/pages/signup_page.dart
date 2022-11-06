@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_clean_solid/core/constants/password_validation_constants.dart';
 import 'package:todo_clean_solid/core/enums/sized_box_spacer_type.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/cubit/auth_cubit.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/widgets/auth_appbar.dart';
 import 'package:todo_clean_solid/core/validators/validators.dart';
+import 'package:todo_clean_solid/core/widgets/custom_password_textfield.dart';
 
 import '../../../../extensions/build_context.dart';
 import '../../../../routes/auth_named_routes.dart';
@@ -28,6 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController _passwordConfirmationController;
   late TextEditingController _nameController;
   late GlobalKey<FormState> _formKey;
+  late FormFieldValidator<String> passwordValidators;
 
   @override
   void initState() {
@@ -38,6 +41,21 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordConfirmationController = TextEditingController();
     _nameController = TextEditingController();
     _formKey = GlobalKey<FormState>();
+
+    passwordValidators = CustomValidators.multiple([
+      CustomValidators.isRequired(),
+      CustomValidators.minLength(8),
+      CustomValidators.containsLetters(
+          controller: _passwordController,
+          errorMessage: PasswordValidationConstants.doesNotContainsLetters),
+      CustomValidators.containsNumbers(
+          controller: _passwordController,
+          errorMessage: PasswordValidationConstants.doesNotContainsNumbers),
+      CustomValidators.containsSpecialCharacters(
+          controller: _passwordController,
+          errorMessage:
+              PasswordValidationConstants.doesNotContainsSpecialChars),
+    ]);
   }
 
   @override
@@ -57,6 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Form(
             key: _formKey,
             child: BlocListener<AuthCubit, AuthState>(
+              bloc: _authCubit,
               listener: (context, state) {
                 if (state is SignUpSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -103,33 +122,18 @@ class _SignUpPageState extends State<SignUpPage> {
                         const SizedBoxSpacer(
                           percentage: 2,
                         ),
-                        CustomTextfield(
+                        CustomPasswordTextfield(
                           controller: _passwordController,
                           labelText: 'Senha',
-                          suffixIcon: const Icon(
-                            Icons.visibility,
-                            color: CustomColors.white,
-                            size: 20,
-                          ),
-                          validator: CustomValidators.isRequired(),
+                          validator: passwordValidators,
                         ),
                         const SizedBoxSpacer(
                           percentage: 2,
                         ),
-                        CustomTextfield(
+                        CustomPasswordTextfield(
                           controller: _passwordConfirmationController,
                           labelText: 'Confirmação de senha',
-                          suffixIcon: const Icon(
-                            Icons.visibility,
-                            color: CustomColors.white,
-                            size: 20,
-                          ),
-                          validator: CustomValidators.multiple([
-                            CustomValidators.isRequired(),
-                            CustomValidators.compare(
-                                controller: _passwordController,
-                                errorMessage: 'Senhas não coincidem')
-                          ]),
+                          validator: passwordValidators,
                         ),
                       ],
                     ),
@@ -145,17 +149,22 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         SizedBox(
                           width: double.maxFinite,
-                          child: CustomButton(
-                            text: 'Criar conta',
-                            onPressed: () async {
-                              if (_formKey.currentState == null ||
-                                  !_formKey.currentState!.validate()) {
-                                return;
-                              }
-                              await _authCubit.signUp(
-                                  email: _emailController.text,
-                                  password: _passwordController.text,
-                                  name: _nameController.text);
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) {
+                              return CustomButton(
+                                isLoading: state is SignUpLoading,
+                                text: 'Criar conta',
+                                onPressed: () async {
+                                  if (_formKey.currentState == null ||
+                                      !_formKey.currentState!.validate()) {
+                                    return;
+                                  }
+                                  await _authCubit.signUp(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                      name: _nameController.text);
+                                },
+                              );
                             },
                           ),
                         ),

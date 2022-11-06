@@ -12,6 +12,8 @@ class SignUpUsecaseImpl implements SignUpUsecase {
 
   @override
   Future<Either<Failure, UserModel>> call(
-          {required SignUpEntity signUpEntity}) async =>
-      await _authRepository.signUp(signUpEntity: signUpEntity);
+      {required SignUpEntity signUpEntity}) {
+    final response = _authRepository.signUp(signUpEntity: signUpEntity);
+    return response;
+  }
 }

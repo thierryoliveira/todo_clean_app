@@ -9,19 +9,22 @@ class CustomTextfield extends StatelessWidget {
   final Widget? suffixIcon;
   final String? Function(String? value)? validator;
   final AutovalidateMode? autovalidateMode;
-  const CustomTextfield(
-      {Key? key,
-      this.controller,
-      this.labelText,
-      this.hintText,
-      this.prefixIcon,
-      this.suffixIcon,
-      this.validator,
-      this.autovalidateMode = AutovalidateMode.onUserInteraction})
-      : super(key: key);
+  final bool obscure;
+  const CustomTextfield({
+    Key? key,
+    this.controller,
+    this.labelText,
+    this.hintText,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.validator,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction,
+    this.obscure = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => TextFormField(
+        obscureText: obscure,
         autovalidateMode: autovalidateMode,
         style: const TextStyle(color: CustomColors.white),
         validator: validator,
