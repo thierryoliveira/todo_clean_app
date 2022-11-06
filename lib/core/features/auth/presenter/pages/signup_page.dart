@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_clean_solid/core/enums/sized_box_spacer_type.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/cubit/auth_cubit.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/widgets/auth_appbar.dart';
-import 'package:todo_clean_solid/core/routes/auth_named_routes.dart';
 import 'package:todo_clean_solid/core/validators/validators.dart';
 
 import '../../../../extensions/build_context.dart';
+import '../../../../routes/auth_named_routes.dart';
 import '../../../../theme/colors.dart';
 import '../../../../theme/text_styles.dart';
 import '../../../../widgets/custom_button.dart';
@@ -51,7 +52,8 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: const AuthAppbar(),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: context.width * .05),
+          padding: EdgeInsets.symmetric(
+              horizontal: context.width * .05, vertical: context.height * .04),
           child: Form(
             key: _formKey,
             child: BlocListener<AuthCubit, AuthState>(
@@ -68,104 +70,122 @@ class _SignUpPageState extends State<SignUpPage> {
                   ));
                 }
               },
-              child: ListView(
-                children: [
-                  const SizedBoxSpacer(
-                    percentage: 5,
-                  ),
-                  const AuthHeaderWidget(
-                      title: 'Criar uma conta',
-                      subtitle: 'Por favor, preencha os campos abaixo'),
-                  const SizedBoxSpacer(
-                    percentage: 8,
-                  ),
-                  CustomTextfield(
-                    controller: _nameController,
-                    labelText: 'Nome',
-                    validator: CustomValidators.isRequired(),
-                  ),
-                  const SizedBoxSpacer(
-                    percentage: 2,
-                  ),
-                  CustomTextfield(
-                    controller: _emailController,
-                    labelText: 'Email',
-                    validator: CustomValidators.multiple([
-                      CustomValidators.isRequired(),
-                      CustomValidators.isValidEmail()
-                    ]),
-                  ),
-                  const SizedBoxSpacer(
-                    percentage: 2,
-                  ),
-                  CustomTextfield(
-                    controller: _passwordController,
-                    labelText: 'Senha',
-                    suffixIcon: const Icon(
-                      Icons.visibility,
-                      color: CustomColors.white,
-                      size: 20,
-                    ),
-                    validator: CustomValidators.isRequired(),
-                  ),
-                  const SizedBoxSpacer(
-                    percentage: 2,
-                  ),
-                  CustomTextfield(
-                    controller: _passwordConfirmationController,
-                    labelText: 'Confirmação de senha',
-                    suffixIcon: const Icon(
-                      Icons.visibility,
-                      color: CustomColors.white,
-                      size: 20,
-                    ),
-                    validator: CustomValidators.multiple([
-                      CustomValidators.isRequired(),
-                      CustomValidators.compare(
-                          controller: _passwordController,
-                          errorMessage: 'Senhas não coincidem')
-                    ]),
-                  ),
-                  const SizedBoxSpacer(
-                    percentage: 8,
-                  ),
-                  CustomButton(
-                    text: 'Criar conta',
-                    onPressed: () async {
-                      if (_formKey.currentState == null ||
-                          !_formKey.currentState!.validate()) {
-                        return;
-                      }
-                      await _authCubit.signUp(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          name: _nameController.text);
-                    },
-                  ),
-                  const SizedBoxSpacer(
-                    percentage: 2,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Já tem uma conta?',
-                        style: TextStyles.small,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, AuthNamedRoutes.authSignIn);
-                        },
-                        child: Text(
-                          'Entrar',
-                          style: TextStyles.small.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: CustomColors.blue),
+              child: CustomScrollView(
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        const SizedBoxSpacer(
+                          percentage: 5,
                         ),
-                      ),
-                    ],
+                        const AuthHeaderWidget(
+                            title: 'Criar uma conta',
+                            subtitle: 'Por favor, preencha os campos abaixo'),
+                        const SizedBoxSpacer(
+                          percentage: 8,
+                        ),
+                        CustomTextfield(
+                          controller: _nameController,
+                          labelText: 'Nome',
+                          validator: CustomValidators.isRequired(),
+                        ),
+                        const SizedBoxSpacer(
+                          percentage: 2,
+                        ),
+                        CustomTextfield(
+                          controller: _emailController,
+                          labelText: 'Email',
+                          validator: CustomValidators.multiple([
+                            CustomValidators.isRequired(),
+                            CustomValidators.isValidEmail()
+                          ]),
+                        ),
+                        const SizedBoxSpacer(
+                          percentage: 2,
+                        ),
+                        CustomTextfield(
+                          controller: _passwordController,
+                          labelText: 'Senha',
+                          suffixIcon: const Icon(
+                            Icons.visibility,
+                            color: CustomColors.white,
+                            size: 20,
+                          ),
+                          validator: CustomValidators.isRequired(),
+                        ),
+                        const SizedBoxSpacer(
+                          percentage: 2,
+                        ),
+                        CustomTextfield(
+                          controller: _passwordConfirmationController,
+                          labelText: 'Confirmação de senha',
+                          suffixIcon: const Icon(
+                            Icons.visibility,
+                            color: CustomColors.white,
+                            size: 20,
+                          ),
+                          validator: CustomValidators.multiple([
+                            CustomValidators.isRequired(),
+                            CustomValidators.compare(
+                                controller: _passwordController,
+                                errorMessage: 'Senhas não coincidem')
+                          ]),
+                        ),
+                      ],
+                    ),
                   ),
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const SizedBoxSpacer(
+                          percentage: 1,
+                          type: SizedBoxSpacerType.vertical,
+                        ),
+                        SizedBox(
+                          width: double.maxFinite,
+                          child: CustomButton(
+                            text: 'Criar conta',
+                            onPressed: () async {
+                              if (_formKey.currentState == null ||
+                                  !_formKey.currentState!.validate()) {
+                                return;
+                              }
+                              await _authCubit.signUp(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  name: _nameController.text);
+                            },
+                          ),
+                        ),
+                        const SizedBoxSpacer(
+                          percentage: 2,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Já tem uma conta?',
+                              style: TextStyles.small,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, AuthNamedRoutes.authSignIn);
+                              },
+                              child: Text(
+                                'Entrar',
+                                style: TextStyles.small.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: CustomColors.blue),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
