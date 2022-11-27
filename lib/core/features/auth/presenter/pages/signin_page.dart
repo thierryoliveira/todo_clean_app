@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/cubit/auth_cubit.dart';
@@ -30,6 +31,14 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
+
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, TasksNamedRoutes.taskList);
+        return;
+      }
+    });
+
     _authCubit = context.read<AuthCubit>();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();

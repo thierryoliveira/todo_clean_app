@@ -73,36 +73,14 @@ class CustomValidators {
     };
   }
 
-  static FormFieldValidator<String> containsNumbers({
+  static FormFieldValidator<String> isValidPassword({
     required TextEditingController controller,
     required String errorMessage,
   }) {
     return (value) {
-      if (!(controller.text.contains(RegExp(r'[0-9]')))) {
-        return errorMessage;
-      }
-      return null;
-    };
-  }
-
-  static FormFieldValidator<String> containsLetters({
-    required TextEditingController controller,
-    required String errorMessage,
-  }) {
-    return (value) {
-      if (!(controller.text.contains(RegExp(r'[a-zA-Z]')))) {
-        return errorMessage;
-      }
-      return null;
-    };
-  }
-
-  static FormFieldValidator<String> containsSpecialCharacters({
-    required TextEditingController controller,
-    required String errorMessage,
-  }) {
-    return (value) {
-      if (!(controller.text.contains(RegExp('[!@#%^&*(),.?":{}|<>]')))) {
+      if (!RegExp(
+              r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
+          .hasMatch(controller.text)) {
         return errorMessage;
       }
       return null;

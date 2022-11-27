@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_clean_solid/core/constants/password_validation_constants.dart';
 import 'package:todo_clean_solid/core/enums/sized_box_spacer_type.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/cubit/auth_cubit.dart';
 import 'package:todo_clean_solid/core/features/auth/presenter/widgets/auth_appbar.dart';
@@ -30,7 +29,6 @@ class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController _passwordConfirmationController;
   late TextEditingController _nameController;
   late GlobalKey<FormState> _formKey;
-  late FormFieldValidator<String> passwordValidators;
 
   @override
   void initState() {
@@ -41,21 +39,6 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordConfirmationController = TextEditingController();
     _nameController = TextEditingController();
     _formKey = GlobalKey<FormState>();
-
-    passwordValidators = CustomValidators.multiple([
-      CustomValidators.isRequired(),
-      CustomValidators.minLength(8),
-      CustomValidators.containsLetters(
-          controller: _passwordController,
-          errorMessage: PasswordValidationConstants.doesNotContainsLetters),
-      CustomValidators.containsNumbers(
-          controller: _passwordController,
-          errorMessage: PasswordValidationConstants.doesNotContainsNumbers),
-      CustomValidators.containsSpecialCharacters(
-          controller: _passwordController,
-          errorMessage:
-              PasswordValidationConstants.doesNotContainsSpecialChars),
-    ]);
   }
 
   @override
@@ -125,7 +108,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         CustomPasswordTextfield(
                           controller: _passwordController,
                           labelText: 'Senha',
-                          validator: passwordValidators,
+                          validator: CustomValidators.isValidPassword(
+                              controller: _passwordController,
+                              errorMessage: 'Senha muito fraca'),
                         ),
                         const SizedBoxSpacer(
                           percentage: 2,
@@ -133,7 +118,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         CustomPasswordTextfield(
                           controller: _passwordConfirmationController,
                           labelText: 'Confirmação de senha',
-                          validator: passwordValidators,
+                          validator: CustomValidators.compare(
+                              controller: _passwordController,
+                              errorMessage: 'Senhas não coincidem'),
                         ),
                       ],
                     ),
