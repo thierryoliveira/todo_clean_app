@@ -24,4 +24,14 @@ class TaskRepositoryImpl implements TaskRepository {
       return Left(TaskFailure(message: exception.errorMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, List<TaskEntity>>> getAllTasks() async {
+    try {
+      final result = await _taskDatasource.getAllTasks();
+      return Right(result);
+    } on TaskException catch (exception) {
+      return Left(TaskFailure(message: exception.errorMessage));
+    }
+  }
 }

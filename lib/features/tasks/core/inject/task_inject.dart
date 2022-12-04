@@ -5,6 +5,8 @@ import 'package:todo_clean_solid/features/tasks/data/repositories/task_repositor
 import 'package:todo_clean_solid/features/tasks/domain/repositories/task_repository.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/create_task/create_task_usecase.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/create_task/create_task_usecase_impl.dart';
+import 'package:todo_clean_solid/features/tasks/domain/usecases/get_all_tasks/get_all_tasks_usecase.dart';
+import 'package:todo_clean_solid/features/tasks/domain/usecases/get_all_tasks/get_all_tasks_usecase_impl.dart';
 
 class TaskInject {
   TaskInject._();
@@ -20,5 +22,8 @@ class TaskInject {
 
     getIt.registerFactory<CreateTaskUsecase>(() =>
         CreateTaskUsecaseImpl(taskRepository: getIt.get<TaskRepository>()));
+
+    getIt.registerFactory<GetAllTasksUsecase>(() =>
+        GetAllTasksUsecaseImpl(taskRepository: getIt.get<TaskRepository>()));
   }
 }

@@ -14,14 +14,31 @@ class TaskDatasourceImpl implements TaskDatasource {
   @override
   Future<bool> createTask({required TaskModel taskModel}) async {
     try {
-      final result = await _database
+      await _database
           .collection(DatabaseCollections.tasks)
           .add(taskModel.toMap());
       return true;
     } on FirebaseException catch (exception) {
       throw TaskException(errorMessage: exception.message ?? exception.code);
     } catch (exception) {
-      throw TaskException(errorMessage: exception.toString());
+      throw TaskException(errorMessage: 'Fail to create a task');
+    }
+  }
+
+  @override
+  Future<List<TaskModel>> getAllTasks() async {
+    try {
+      final tasksSnapshot =
+          await _database.collection(DatabaseCollections.tasks).get();
+      final tasks = tasksSnapshot.docs
+          .map<TaskModel>(
+              (taskSnapshot) => TaskModel.fromMap(taskSnapshot.data()))
+          .toList();
+      return tasks;
+    } on FirebaseException catch (exception) {
+      throw TaskException(errorMessage: exception.message ?? exception.code);
+    } catch (exception) {
+      throw TaskException(errorMessage: 'Fail to get all tasks');
     }
   }
 }
