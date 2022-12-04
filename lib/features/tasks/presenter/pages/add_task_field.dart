@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_clean_solid/core/extensions/build_context.dart';
 import 'package:todo_clean_solid/core/theme/colors.dart';
+import 'package:todo_clean_solid/features/tasks/domain/entities/enums/create_task_button_type.dart';
 import 'package:todo_clean_solid/features/tasks/presenter/cubits/add_task_field/add_task_field_cubit.dart';
+import 'package:todo_clean_solid/features/tasks/presenter/widgets/task/add_task_button.dart';
 
 class AddTaskField extends StatefulWidget {
-  const AddTaskField({super.key});
+  final VoidCallback onTapCreate;
+  final TextEditingController textController;
+
+  const AddTaskField({
+    super.key,
+    required this.onTapCreate,
+    required this.textController,
+  });
 
   @override
   State<AddTaskField> createState() => _AddTaskFieldState();
@@ -41,6 +50,7 @@ class _AddTaskFieldState extends State<AddTaskField> {
               width: isAdding ? context.width * .7 : 0,
               height: isAdding ? 50 : 0,
               child: TextField(
+                controller: widget.textController,
                 focusNode: addTaskFocus,
                 onEditingComplete: () {
                   addTaskFocus.unfocus();
@@ -51,17 +61,20 @@ class _AddTaskFieldState extends State<AddTaskField> {
               ),
             ),
             SizedBox(width: context.width * .05),
-            FloatingActionButton(
-              backgroundColor: CustomColors.blue,
-              onPressed: () {
-                //TODO: refactor this responsability to have no logic on this callback
-                if (isAdding) {
-                } else {
-                  addTaskFieldCubit.changeIsAddingTask();
-                  addTaskFocus.requestFocus();
-                }
-              },
-              child: Icon(isAdding ? Icons.check : Icons.add),
+            AddTaskButton(
+              createTaskButtonType: isAdding
+                  ? CreateTaskButtonType.done
+                  : CreateTaskButtonType.add,
+              onTap: isAdding
+                  ? () {
+                      widget.onTapCreate();
+                      addTaskFocus.unfocus();
+                      addTaskFieldCubit.changeIsAddingTask();
+                    }
+                  : () {
+                      addTaskFieldCubit.changeIsAddingTask();
+                      addTaskFocus.requestFocus();
+                    },
             ),
           ],
         );
