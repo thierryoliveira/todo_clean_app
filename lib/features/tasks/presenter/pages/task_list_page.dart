@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_clean_solid/core/extensions/build_context.dart';
-import 'package:todo_clean_solid/core/theme/text_styles.dart';
 import 'package:todo_clean_solid/features/tasks/domain/entities/task_entity.dart';
 import 'package:todo_clean_solid/features/tasks/presenter/cubits/task/task_cubit.dart';
 import 'package:todo_clean_solid/features/tasks/presenter/pages/add_task_field.dart';
@@ -21,7 +20,7 @@ class _TaskListPageState extends State<TaskListPage> {
   @override
   void initState() {
     super.initState();
-    taskCubit = context.read<TaskCubit>();
+    taskCubit = context.read<TaskCubit>()..getAllTasks();
     textController = TextEditingController();
   }
 
@@ -40,29 +39,35 @@ class _TaskListPageState extends State<TaskListPage> {
                   id: '0', title: 'Teste', subtitle: 'Teste', isDone: true))),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.width * .05),
-        child: BlocListener<TaskCubit, TaskState>(
-          bloc: taskCubit,
-          listener: (context, state) {
-            if (state is CreateTaskSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Task criada com sucesso')));
-              textController.clear();
-            }
-          },
-          child: ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: context.height * .06, bottom: context.height * .04),
-                child: Text(
-                  'What will you like to do?',
-                  style: TextStyles.header1,
-                ),
-              ),
-              const TaskItem(),
-              const SizedBox(height: 50),
-            ],
-          ),
-        ),
+        child: BlocConsumer<TaskCubit, TaskState>(
+            bloc: taskCubit,
+            listener: (context, state) {
+              if (state is CreateTaskSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Task criada com sucesso')));
+                textController.clear();
+              }
+            },
+            builder: (context, state) {
+              if (state is GetAllTasksSuccess) {
+                return ListView.builder(
+                  itemCount: state.tasks.length,
+                  itemBuilder: (context, index) {
+                    final currentTask = state.tasks[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: context.height * .02),
+                      child: TaskItem(
+                        title: currentTask.title,
+                        subtitle: currentTask.subtitle,
+                        isDone: currentTask.isDone,
+                      ),
+                    );
+                  },
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
       ));
 }

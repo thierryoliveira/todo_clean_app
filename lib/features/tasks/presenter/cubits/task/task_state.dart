@@ -19,3 +19,22 @@ class CreateTaskError extends TaskState {
     required this.error,
   });
 }
+
+class GetAllTasksLoading extends TaskState {}
+
+class GetAllTasksSuccess extends TaskState {
+  final List<TaskEntity> tasks;
+  const GetAllTasksSuccess({
+    required this.tasks,
+  });
+
+  @override
+  List<Object> get props => [tasks];
+}
+
+class GetAllTasksError extends TaskState {
+  final String error;
+  const GetAllTasksError({
+    required this.error,
+  });
+}
