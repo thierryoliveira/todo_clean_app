@@ -14,12 +14,12 @@ class TaskModel extends TaskEntity {
       isDone: entity.isDone);
 
   factory TaskModel.fromMap(Map<String, dynamic> map) => TaskModel(
-        id: '',
+        id: map['id'],
         title: map['title'],
         subtitle: map['subtitle'],
         isDone: map['isDone'],
       );
 
   Map<String, dynamic> toMap() =>
-      {'title': title, 'subtitle': subtitle, 'isDone': isDone};
+      {'id': id, 'title': title, 'subtitle': subtitle, 'isDone': isDone};
 }

@@ -5,8 +5,14 @@ import 'package:todo_clean_solid/features/tasks/data/repositories/task_repositor
 import 'package:todo_clean_solid/features/tasks/domain/repositories/task_repository.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/create_task/create_task_usecase.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/create_task/create_task_usecase_impl.dart';
+import 'package:todo_clean_solid/features/tasks/domain/usecases/delete_task/delete_task_usecase_impl.dart';
+import 'package:todo_clean_solid/features/tasks/domain/usecases/generate_random_id/generate_random_id_usecase.dart';
+import 'package:todo_clean_solid/features/tasks/domain/usecases/generate_random_id/generate_random_id_usecase_impl.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/get_all_tasks/get_all_tasks_usecase.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/get_all_tasks/get_all_tasks_usecase_impl.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../domain/usecases/delete_task/delete_task_usecase.dart';
 
 class TaskInject {
   TaskInject._();
@@ -25,5 +31,10 @@ class TaskInject {
 
     getIt.registerFactory<GetAllTasksUsecase>(() =>
         GetAllTasksUsecaseImpl(taskRepository: getIt.get<TaskRepository>()));
+
+    getIt.registerFactory<GenerateRandomIdUsecase>(
+        () => GenerateRandomIdUsecaseImpl(uuid: const Uuid()));
+    getIt.registerFactory<DeleteTaskUsecase>(() =>
+        DeleteTaskUsecaseImpl(taskRepository: getIt.get<TaskRepository>()));
   }
 }

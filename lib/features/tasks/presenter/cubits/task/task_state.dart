@@ -37,4 +37,18 @@ class GetAllTasksError extends TaskState {
   const GetAllTasksError({
     required this.error,
   });
+  @override
+  List<Object> get props => [error];
+}
+
+class DeleteTaskLoading extends TaskState {}
+
+class DeleteTaskSuccess extends TaskState {}
+
+class DeleteTaskError extends TaskState {
+  final String error;
+
+  const DeleteTaskError({required this.error});
+  @override
+  List<Object> get props => [props];
 }

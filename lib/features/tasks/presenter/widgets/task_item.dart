@@ -6,12 +6,14 @@ class TaskItem extends StatelessWidget {
   final String title;
   final String subtitle;
   final bool isDone;
+  final VoidCallback onDelete;
 
   const TaskItem({
     Key? key,
     required this.title,
     required this.subtitle,
     required this.isDone,
+    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class TaskItem extends StatelessWidget {
           Icons.delete,
           color: CustomColors.red,
         ),
-        onPressed: () {},
+        onPressed: onDelete,
       ),
     );
   }

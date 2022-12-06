@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_clean_solid/core/extensions/build_context.dart';
-import 'package:todo_clean_solid/features/tasks/domain/entities/task_entity.dart';
+import 'package:todo_clean_solid/core/theme/colors.dart';
 import 'package:todo_clean_solid/features/tasks/presenter/cubits/task/task_cubit.dart';
 import 'package:todo_clean_solid/features/tasks/presenter/pages/add_task_field.dart';
 import 'package:todo_clean_solid/features/tasks/presenter/widgets/task_item.dart';
@@ -35,39 +35,78 @@ class _TaskListPageState extends State<TaskListPage> {
       floatingActionButton: AddTaskField(
           textController: textController,
           onTapCreate: () => taskCubit.createTask(
-              taskEntity: TaskEntity(
-                  id: '0', title: 'Teste', subtitle: 'Teste', isDone: true))),
+                title: 'Teste',
+                subtitle: 'Teste',
+              )),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.width * .05),
-        child: BlocConsumer<TaskCubit, TaskState>(
-            bloc: taskCubit,
-            listener: (context, state) {
-              if (state is CreateTaskSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Task criada com sucesso')));
-                textController.clear();
-              }
-            },
-            builder: (context, state) {
-              if (state is GetAllTasksSuccess) {
-                return ListView.builder(
-                  itemCount: state.tasks.length,
-                  itemBuilder: (context, index) {
-                    final currentTask = state.tasks[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: context.height * .02),
-                      child: TaskItem(
-                        title: currentTask.title,
-                        subtitle: currentTask.subtitle,
-                        isDone: currentTask.isDone,
-                      ),
-                    );
+        child: RefreshIndicator(
+          onRefresh: taskCubit.getAllTasks,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: context.height * .1,
+              ),
+              const Text(
+                '✨ Task list ✨',
+                style: TextStyle(
+                    color: CustomColors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+              ),
+              BlocConsumer<TaskCubit, TaskState>(
+                  bloc: taskCubit,
+                  listener: (context, state) async {
+                    if (state is CreateTaskSuccess) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Task criada com sucesso')));
+                      await taskCubit.getAllTasks();
+
+                      textController.clear();
+                    } else if (state is DeleteTaskSuccess) {
+                      await taskCubit.getAllTasks();
+                    }
                   },
-                );
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }),
+                  builder: (context, state) {
+                    if (state is GetAllTasksSuccess) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: state.tasks.length,
+                          itemBuilder: (context, index) {
+                            final currentTask = state.tasks[index];
+                            return Padding(
+                              padding:
+                                  EdgeInsets.only(bottom: context.height * .02),
+                              child: TaskItem(
+                                title: currentTask.title,
+                                subtitle: currentTask.subtitle,
+                                isDone: currentTask.isDone,
+                                onDelete: () async => await taskCubit
+                                    .deleteTask(taskId: currentTask.id),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else if (state is GetAllTasksError) {
+                      return Padding(
+                        padding: EdgeInsets.only(top: context.height * .3),
+                        child: Center(
+                          child: Text(
+                            state.error,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 30),
+                          ),
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
+            ],
+          ),
+        ),
       ));
 }

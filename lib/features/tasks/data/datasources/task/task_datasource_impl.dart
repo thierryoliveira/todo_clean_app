@@ -16,7 +16,8 @@ class TaskDatasourceImpl implements TaskDatasource {
     try {
       await _database
           .collection(DatabaseCollections.tasks)
-          .add(taskModel.toMap());
+          .doc(taskModel.id)
+          .set(taskModel.toMap(), SetOptions(merge: true));
       return true;
     } on FirebaseException catch (exception) {
       throw TaskException(errorMessage: exception.message ?? exception.code);
@@ -39,6 +40,21 @@ class TaskDatasourceImpl implements TaskDatasource {
       throw TaskException(errorMessage: exception.message ?? exception.code);
     } catch (exception) {
       throw TaskException(errorMessage: 'Fail to get all tasks');
+    }
+  }
+
+  @override
+  Future<bool> deleteTask({required String taskId}) async {
+    try {
+      await _database
+          .collection(DatabaseCollections.tasks)
+          .doc(taskId)
+          .delete();
+      return true;
+    } on FirebaseException catch (exception) {
+      throw TaskException(errorMessage: exception.message ?? exception.code);
+    } catch (exception) {
+      throw TaskException(errorMessage: 'Fail to delete task');
     }
   }
 }

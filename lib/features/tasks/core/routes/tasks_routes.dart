@@ -7,6 +7,8 @@ import 'package:todo_clean_solid/features/tasks/domain/usecases/get_all_tasks/ge
 import 'package:todo_clean_solid/features/tasks/presenter/cubits/add_task_field/add_task_field_cubit.dart';
 import 'package:todo_clean_solid/features/tasks/presenter/cubits/task/task_cubit.dart';
 
+import '../../domain/usecases/delete_task/delete_task_usecase.dart';
+import '../../domain/usecases/generate_random_id/generate_random_id_usecase.dart';
 import '../../presenter/pages/task_list_page.dart';
 
 class TasksRoutes {
@@ -22,9 +24,11 @@ class TasksRoutes {
                 ),
                 BlocProvider<TaskCubit>(
                   create: (context) => TaskCubit(
-                    createTaskUsecase: getIt.get<CreateTaskUsecase>(),
-                    getAllTasksUsecase: getIt.get<GetAllTasksUsecase>(),
-                  ),
+                      createTaskUsecase: getIt.get<CreateTaskUsecase>(),
+                      getAllTasksUsecase: getIt.get<GetAllTasksUsecase>(),
+                      generateRandomIdUsecase:
+                          getIt.get<GenerateRandomIdUsecase>(),
+                      deleteTaskUsecase: getIt.get<DeleteTaskUsecase>()),
                 ),
               ],
               child: const TaskListPage(),
