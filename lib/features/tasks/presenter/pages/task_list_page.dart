@@ -70,6 +70,21 @@ class _TaskListPageState extends State<TaskListPage> {
                   },
                   builder: (context, state) {
                     if (state is GetAllTasksSuccess) {
+                      if (state.tasks.isEmpty) {
+                        return Padding(
+                          padding: EdgeInsets.only(top: context.height * .1),
+                          child: const Center(
+                            child: Text(
+                              'Nothing to do,\n let\'s to add a new task?',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: CustomColors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
                       return Expanded(
                         child: ListView.builder(
                           itemCount: state.tasks.length,
