@@ -62,7 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
               listener: (context, state) {
                 if (state is SignUpSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Conta criada com sucesso'),
+                    content: Text('Account created successfully'),
                     backgroundColor: CustomColors.green,
                   ));
                 } else if (state is AuthError) {

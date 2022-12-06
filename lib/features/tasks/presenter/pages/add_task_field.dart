@@ -23,12 +23,14 @@ class AddTaskField extends StatefulWidget {
 class _AddTaskFieldState extends State<AddTaskField> {
   late AddTaskFieldCubit addTaskFieldCubit;
   late FocusNode addTaskFocus;
+  late GlobalKey<FormState> formKey;
 
   @override
   void initState() {
     super.initState();
     addTaskFieldCubit = context.read<AddTaskFieldCubit>();
     addTaskFocus = FocusNode();
+    formKey = GlobalKey<FormState>();
   }
 
   @override
@@ -49,15 +51,26 @@ class _AddTaskFieldState extends State<AddTaskField> {
               duration: const Duration(milliseconds: 500),
               width: isAdding ? context.width * .7 : 0,
               height: isAdding ? 50 : 0,
-              child: TextField(
-                controller: widget.textController,
-                focusNode: addTaskFocus,
-                onEditingComplete: () {
-                  addTaskFocus.unfocus();
-                  addTaskFieldCubit.changeIsAddingTask();
-                },
-                decoration: const InputDecoration(
-                    filled: true, fillColor: CustomColors.white),
+              child: Form(
+                key: formKey,
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please, add some text';
+                    }
+                    return null;
+                  },
+                  controller: widget.textController,
+                  focusNode: addTaskFocus,
+                  onEditingComplete: () {
+                    addTaskFocus.unfocus();
+                    addTaskFieldCubit.changeIsAddingTask();
+                  },
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: CustomColors.white,
+                  ),
+                ),
               ),
             ),
             SizedBox(width: context.width * .05),
@@ -67,6 +80,9 @@ class _AddTaskFieldState extends State<AddTaskField> {
                   : CreateTaskButtonType.add,
               onTap: isAdding
                   ? () {
+                      if (!formKey.currentState!.validate()) {
+                        return;
+                      }
                       widget.onTapCreate();
                       addTaskFocus.unfocus();
                       addTaskFieldCubit.changeIsAddingTask();

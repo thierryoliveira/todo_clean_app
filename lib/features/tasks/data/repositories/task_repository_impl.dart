@@ -44,4 +44,16 @@ class TaskRepositoryImpl implements TaskRepository {
       return Left(TaskFailure(message: exception.errorMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> changeIsDone(
+      {required TaskEntity taskEntity}) async {
+    try {
+      final result = await _taskDatasource.changeIsDone(
+          taskModel: TaskModel.fromEntity(taskEntity));
+      return Right(result);
+    } on TaskException catch (exception) {
+      return Left(TaskFailure(message: exception.errorMessage));
+    }
+  }
 }

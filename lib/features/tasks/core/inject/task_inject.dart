@@ -3,6 +3,8 @@ import 'package:todo_clean_solid/core/injections/inject.dart';
 import 'package:todo_clean_solid/features/tasks/data/datasources/datasources.dart';
 import 'package:todo_clean_solid/features/tasks/data/repositories/task_repository_impl.dart';
 import 'package:todo_clean_solid/features/tasks/domain/repositories/task_repository.dart';
+import 'package:todo_clean_solid/features/tasks/domain/usecases/change_is_done/change_is_done_usecase.dart';
+import 'package:todo_clean_solid/features/tasks/domain/usecases/change_is_done/change_is_done_usecase_impl.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/create_task/create_task_usecase.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/create_task/create_task_usecase_impl.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/delete_task/delete_task_usecase_impl.dart';
@@ -36,5 +38,8 @@ class TaskInject {
         () => GenerateRandomIdUsecaseImpl(uuid: const Uuid()));
     getIt.registerFactory<DeleteTaskUsecase>(() =>
         DeleteTaskUsecaseImpl(taskRepository: getIt.get<TaskRepository>()));
+
+    getIt.registerFactory<ChangeIsDoneUsecase>(() =>
+        ChangeIsDoneUsecaseImpl(taskRepository: getIt.get<TaskRepository>()));
   }
 }

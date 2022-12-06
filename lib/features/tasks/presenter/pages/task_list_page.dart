@@ -35,8 +35,7 @@ class _TaskListPageState extends State<TaskListPage> {
       floatingActionButton: AddTaskField(
           textController: textController,
           onTapCreate: () => taskCubit.createTask(
-                title: 'Teste',
-                subtitle: 'Teste',
+                title: textController.text,
               )),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.width * .05),
@@ -64,7 +63,8 @@ class _TaskListPageState extends State<TaskListPage> {
                       await taskCubit.getAllTasks();
 
                       textController.clear();
-                    } else if (state is DeleteTaskSuccess) {
+                    } else if (state is DeleteTaskSuccess ||
+                        state is ChangeIsDoneTaskSuccess) {
                       await taskCubit.getAllTasks();
                     }
                   },
@@ -95,10 +95,13 @@ class _TaskListPageState extends State<TaskListPage> {
                                   EdgeInsets.only(bottom: context.height * .02),
                               child: TaskItem(
                                 title: currentTask.title,
-                                subtitle: currentTask.subtitle,
                                 isDone: currentTask.isDone,
                                 onDelete: () async => await taskCubit
                                     .deleteTask(taskId: currentTask.id),
+                                onChangeIsDone: () async =>
+                                    await taskCubit.changeIsDone(
+                                  taskEntity: currentTask,
+                                ),
                               ),
                             );
                           },

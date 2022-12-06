@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_clean_solid/core/injections/inject.dart';
 import 'package:todo_clean_solid/features/tasks/core/routes/tasks_named_routes.dart';
+import 'package:todo_clean_solid/features/tasks/domain/usecases/change_is_done/change_is_done_usecase.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/create_task/create_task_usecase.dart';
 import 'package:todo_clean_solid/features/tasks/domain/usecases/get_all_tasks/get_all_tasks_usecase.dart';
 import 'package:todo_clean_solid/features/tasks/presenter/cubits/add_task_field/add_task_field_cubit.dart';
@@ -24,6 +25,7 @@ class TasksRoutes {
                 ),
                 BlocProvider<TaskCubit>(
                   create: (context) => TaskCubit(
+                      changeIsDoneUsecase: getIt.get<ChangeIsDoneUsecase>(),
                       createTaskUsecase: getIt.get<CreateTaskUsecase>(),
                       getAllTasksUsecase: getIt.get<GetAllTasksUsecase>(),
                       generateRandomIdUsecase:

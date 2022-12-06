@@ -57,4 +57,19 @@ class TaskDatasourceImpl implements TaskDatasource {
       throw TaskException(errorMessage: 'Fail to delete task');
     }
   }
+
+  @override
+  Future<bool> changeIsDone({required TaskModel taskModel}) async {
+    try {
+      await _database
+          .collection(DatabaseCollections.tasks)
+          .doc(taskModel.id)
+          .update({'isDone': taskModel.isDone});
+      return true;
+    } on FirebaseException catch (exception) {
+      throw TaskException(errorMessage: exception.message ?? exception.code);
+    } catch (exception) {
+      throw TaskException(errorMessage: 'Fail to create a task');
+    }
+  }
 }
